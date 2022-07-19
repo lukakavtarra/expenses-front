@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: "Nunito Sans", sans-serif;
+}
+html {
+  height: 100vh;
+}
+body {
+  background-color: #d9afd9;
+  background-image: linear-gradient(0deg, #d9afd9 0%, #97d9e1 100%);
+}
+main {
+  margin: 3rem 5rem;
+}
+h1 {
+  text-align: center;
+  font-size: 61px;
+}
+#expensesInput {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  margin: 4rem 0;
+}
+#expensesInput * {
+  margin-right: 0.5rem;
+}
+input {
+  width: 16rem;
+  height: 2rem;
+  font-style: italic;
+}
+button {
+  height: 2rem;
+  width: 5rem;
+  background-color: gray;
+  border: 1px solid;
+  border-radius: 10px;
+}
+div#expanses-list div {
+  display: flex;
+  justify-content: flex-start;
+  margin: 2rem 0;
+}
+div#expanses-list div * {
+  margin-right: 9rem;
+}
