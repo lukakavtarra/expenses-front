@@ -38,11 +38,17 @@ button {
   border: 1px solid;
   border-radius: 10px;
 }
-div#expanses-list div {
-  display: flex;
-  justify-content: flex-start;
+#expanses-list div {
   margin: 2rem 0;
+  column-count: 5;
+  width: 902px;
 }
-div#expanses-list div * {
-  margin-right: 9rem;
+
+i.fa-solid {
+  margin: 0 10px;
+}
+#totalPrice {
+  position: relative;
+  left: 23rem;
+  width: 542px !important;
 }
