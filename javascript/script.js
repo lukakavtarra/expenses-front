@@ -15,7 +15,8 @@ const getShopNames = async () => {
   render(shop);
 };
 
-render = async (shoppingLists) => {
+const render = async (shoppingLists) => {
+  getShopListDiv.innerHTML = "";
   let total = 0;
   createTotal.id = "totalPrice";
   getShopListDiv.append(createTotal);
@@ -29,15 +30,23 @@ render = async (shoppingLists) => {
     <p>$${item.price}</p>
     <p>
     <i class="fa-solid fa-pen-to-square"></i>
-    <i class="fa-solid fa-trash"></i>
+    <i class="fa-solid fa-trash deleteIcon"></i>
     </p>`;
 
+    shopList.title = item.id;
+    total += Number(item.price);
     getShopListDiv.append(shopList);
   });
+
   // calculating total
   createTotal.innerHTML = `Total: $${total}`;
+  const deleteButton = document.querySelectorAll(".deleteIcon");
+  deleteButton.forEach((item) => {
+    item.addEventListener("click", () =>
+      deleteFunction(item.parentNode.parentNode.title)
+    );
+  });
 };
-
 window.onload = async () => {
   await getShopNames();
 };
