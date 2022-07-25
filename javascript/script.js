@@ -29,6 +29,11 @@ const getShopNames = async () => {
   const shop = await getApi.json();
   render(shop);
 };
+const deleteShopNames = async (id) => {
+  const getApi = await withoutBody("DELETE", id);
+  const shop = await getApi.json();
+  render(shop);
+};
 
 const render = async (shoppingLists) => {
   getShopListDiv.innerHTML = "";
@@ -58,7 +63,7 @@ const render = async (shoppingLists) => {
   const deleteButton = document.querySelectorAll(".deleteIcon");
   deleteButton.forEach((item) => {
     item.addEventListener("click", () =>
-      deleteFunction(item.parentNode.parentNode.title)
+      deleteShopNames(item.parentNode.parentNode.title)
     );
   });
 };
