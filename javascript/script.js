@@ -52,6 +52,9 @@ const addExpense = async () => {
       price: getPriceInput.value,
     };
 
+    getShopInput.value = "";
+    getPriceInput.value = "";
+
     const getApi = await withBody("POST", newExpense);
     const shop = await getApi.json();
     render(shop);
