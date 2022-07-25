@@ -29,6 +29,7 @@
           <p>Name of the shop</p>
           <input
             title="shopName"
+            id="shopName"
             placeholder="Name of the shop"
             type="text"
             required
@@ -38,11 +39,13 @@
           <p>How much money spent</p>
           <input
             title="moneySpent"
+            id="moneySpent"
             placeholder="How much money spent"
             type="number"
+            required
           />
         </div>
-        <button>Add</button>
+        <button onclick="addExpense()">Add</button>
       </div>
       <div id="expanses-list"></div>
     </main>

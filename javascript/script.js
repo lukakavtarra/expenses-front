@@ -1,5 +1,7 @@
 const getShopListDiv = document.getElementById("expanses-list");
 const createTotal = document.createElement("div");
+const getShopInput = document.getElementById("shopName");
+const getPriceInput = document.getElementById("moneySpent");
 const link = "http://localhost:3300/api/expenses/";
 const headers = {
   Accept: "application/json",
@@ -29,11 +31,29 @@ const getShopNames = async () => {
   const shop = await getApi.json();
   render(shop);
 };
+// delete expenses
 const deleteShopNames = async (id) => {
   const getApi = await withoutBody("DELETE", id);
   const shop = await getApi.json();
   render(shop);
 };
+// add expenses
+const addExpense = async () => {
+  const numRegex = /^\d+$/;
+  if (getShopInput.checkValidity() && getPriceInput.checkValidity()) {
+    if(Boolean(getShopInput.value.trim()) && numRegex.test(getPriceInput.value) ){
+      const newExpense = {
+        shop : getShopInput.value,
+        price : getPriceInput.value
+      };
+
+      const getApi = await withBody("POST", newExpense);
+      const shop = await getApi.json();
+      render(shop);
+    }
+  }
+};
+
 
 const render = async (shoppingLists) => {
   getShopListDiv.innerHTML = "";
@@ -70,3 +90,4 @@ const render = async (shoppingLists) => {
 window.onload = async () => {
   await getShopNames();
 };
+
