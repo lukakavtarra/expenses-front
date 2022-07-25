@@ -1,17 +1,32 @@
 const getShopListDiv = document.getElementById("expanses-list");
 const createTotal = document.createElement("div");
+const link = "http://localhost:3300/api/expenses/";
+const headers = {
+  Accept: "application/json",
+  "Content-Type": "application/json",
+};
 
+const withBody = async (method, body, id) => {
+  const finalLink = id ? `${link}/${id}` : link;
+  return fetch(finalLink, {
+    method,
+    headers,
+    body: JSON.stringify(body),
+  });
+};
+
+const withoutBody = async (method, id) => {
+  const finalLink = id ? `${link}/${id}` : link;
+  return fetch(finalLink, {
+    method,
+    headers,
+  });
+};
 // get expenses list from api
 const getShopNames = async () => {
-  const response = await fetch(`http://localhost:3300/api/expenses/`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
-
-  const shop = await response.json();
+  console.log(withoutBody("GET"));
+  const getApi = await withoutBody("GET");
+  const shop = await getApi.json();
   render(shop);
 };
 
