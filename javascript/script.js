@@ -1,7 +1,16 @@
-const getShopListDiv = document.getElementById("expanses-list");
 const createTotal = document.createElement("div");
+const createButton = document.createElement("button");
+
+const getMain = document.querySelector("main")
+const getShopListDiv = document.getElementById("expanses-list");
 const getShopInput = document.getElementById("shopName");
 const getPriceInput = document.getElementById("moneySpent");
+const expensesInputDiv = document.getElementById("expensesInput");
+//error messages
+const wrongValidity = document.createElement('div');
+const errorAlert = document.createElement('p')    
+const errorMessage = document.createElement('p');
+
 const link = "http://localhost:3300/api/expenses/";
 const headers = {
   Accept: "application/json",
@@ -26,7 +35,6 @@ const withoutBody = async (method, id) => {
 };
 // get expenses list from api
 const getShopNames = async () => {
-  console.log(withoutBody("GET"));
   const getApi = await withoutBody("GET");
   const shop = await getApi.json();
   render(shop);
@@ -39,9 +47,7 @@ const deleteShopNames = async (id) => {
 };
 // add expenses
 const addExpense = async () => {
-  const numRegex = /^\d+$/;
-  if (getShopInput.checkValidity() && getPriceInput.checkValidity()) {
-    if(Boolean(getShopInput.value.trim()) && numRegex.test(getPriceInput.value) ){
+    if(Boolean(getShopInput.value.trim()) && !(Number.isNaN(Number(getPriceInput.value))) ){
       const newExpense = {
         shop : getShopInput.value,
         price : getPriceInput.value
@@ -50,9 +56,24 @@ const addExpense = async () => {
       const getApi = await withBody("POST", newExpense);
       const shop = await getApi.json();
       render(shop);
+    }else {
+      
+      wrongValidity.classList = "error-box";
+      getMain.appendChild(wrongValidity)
+
+      errorAlert.innerHTML = `<span>!</span> Invalid Shop name or Price`;
+      errorMessage.innerHTML = `Please enter valid name or price`
+
+      errorAlert.classList = "error-alert";
+      wrongValidity.append(errorAlert)
+
+      errorMessage.classList = "error-message"
+      wrongValidity.append(errorMessage)
+      setTimeout(function(){
+        wrongValidity.remove();
+      }, 3000);
     }
-  }
-};
+  };
 
 
 const render = async (shoppingLists) => {
@@ -89,5 +110,9 @@ const render = async (shoppingLists) => {
 };
 window.onload = async () => {
   await getShopNames();
+  createButton.innerText = "Add"
+  createButton.addEventListener("click", addExpense);
+  expensesInputDiv.append(createButton)
+  
 };
 
