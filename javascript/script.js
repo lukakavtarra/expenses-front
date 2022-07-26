@@ -39,6 +39,54 @@ const deleteShopNames = async (id) => {
   render(shop);
 };
 
+// making update input
+const editShopList = (item) => {
+  const editShopName = document.createElement("input");
+  const editPrice = document.createElement("input");
+
+  const currentShopName = item.querySelector(".shopName");
+  const currentPrice = item.querySelector(".itemPrice");
+  const icons = item.querySelector(".icons");
+  const checkIcon = icons.querySelector(".checkIcon");
+  if (
+    currentShopName.parentNode.innerHTML !==
+    `<input class="newShopInput" placeholder="Enter new shop name">`
+  ) {
+    currentShopName.innerHTML = ``;
+
+    editShopName.classList = "newShopInput";
+    editShopName.placeholder = "Enter new shop name";
+    currentShopName.append(editShopName);
+
+    currentPrice.innerHTML = ``;
+    editPrice.classList = "newShopInput";
+    editPrice.placeholder = "Enter new price";
+    editPrice.type = "number";
+    currentPrice.append(editPrice);
+
+    checkIcon.addEventListener("click", async () => {
+      if (editShopName.value == "" && editPrice.value == "") {
+        getShopNames();
+      } else {
+        if (
+          (editShopName.value == "" || Boolean(editShopName.value.trim())) &&
+          !Number.isNaN(Number(editPrice.value))
+        ) {
+          const updateExpense = {
+            shop: editShopName.value,
+            price: Number(editPrice.value),
+          };
+          const getApi = await withBody("PATCH", updateExpense, item.title);
+          const shop = await getApi.json();
+          render(shop);
+        } else {
+          getErrorMessage();
+        }
+      }
+    });
+  }
+};
+
 // add expenses
 const addExpense = async () => {
   const getShopInput = document.getElementById("shopName");
@@ -59,26 +107,7 @@ const addExpense = async () => {
     const shop = await getApi.json();
     render(shop);
   } else {
-    //error messages
-    const getMain = document.querySelector("main");
-    const wrongValidity = document.createElement("div");
-    const errorAlert = document.createElement("p");
-    const errorMessage = document.createElement("p");
-
-    wrongValidity.classList = "error-box";
-    getMain.appendChild(wrongValidity);
-
-    errorAlert.innerHTML = `<span>!</span> Invalid Shop name or Price`;
-    errorMessage.innerHTML = `Please enter valid name or price`;
-
-    errorAlert.classList = "error-alert";
-    wrongValidity.append(errorAlert);
-
-    errorMessage.classList = "error-message";
-    wrongValidity.append(errorMessage);
-    setTimeout(function () {
-      wrongValidity.remove();
-    }, 3000);
+    getErrorMessage();
   }
 };
 
@@ -95,11 +124,11 @@ const render = async (shoppingLists) => {
   shoppingLists.forEach((item, index) => {
     const shopList = document.createElement("div");
 
-    shopList.innerHTML = `<p>${index + 1})${item.shop}</p>
+    shopList.innerHTML = `<p class="shopName">${index + 1}) ${item.shop}</p>
     <p>${item.createdAt}</p>
-    <p>$${item.price}</p>
-    <p>
-    <i class="fa-solid fa-pen-to-square"></i>
+    <p class="itemPrice">$${item.price}</p>
+    <p class="icons">
+    <i class="fa-solid fa-pen-to-square editIcon"></i>
     <i class="fa-solid fa-trash deleteIcon"></i>
     </p>`;
 
@@ -110,11 +139,26 @@ const render = async (shoppingLists) => {
 
   // calculating total
   createTotal.innerHTML = `Total: $${total}`;
+
+  //making delete button event listener
   const deleteButton = document.querySelectorAll(".deleteIcon");
   deleteButton.forEach((item) => {
     item.addEventListener("click", () =>
       deleteShopNames(item.parentNode.parentNode.title)
     );
+  });
+
+  //making edit button event listener
+  const editButton = document.querySelectorAll(".editIcon");
+  editButton.forEach((item) => {
+    item.addEventListener("click", () => {
+      if (item.classList[2] == "editIcon") {
+        item.classList = "fa-solid fa-check checkIcon";
+        editShopList(item.parentNode.parentNode);
+      }
+      return;
+      // item.remove();
+    });
   });
 };
 
@@ -123,4 +167,28 @@ window.onload = () => {
   createButton.innerText = "Add";
   createButton.addEventListener("click", addExpense);
   expensesInputDiv.append(createButton);
+};
+
+//get error message
+const getErrorMessage = () => {
+  //error messages
+  const getMain = document.querySelector("main");
+  const wrongValidity = document.createElement("div");
+  const errorAlert = document.createElement("p");
+  const errorMessage = document.createElement("p");
+
+  wrongValidity.classList = "error-box";
+  getMain.appendChild(wrongValidity);
+
+  errorAlert.innerHTML = `<span>!</span> Invalid Shop name or Price`;
+  errorMessage.innerHTML = `Please enter valid name or price`;
+
+  errorAlert.classList = "error-alert";
+  wrongValidity.append(errorAlert);
+
+  errorMessage.classList = "error-message";
+  wrongValidity.append(errorMessage);
+  setTimeout(function () {
+    wrongValidity.remove();
+  }, 3000);
 };
