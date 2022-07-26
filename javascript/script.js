@@ -48,16 +48,27 @@ const editShopList = (item) => {
   const currentPrice = item.querySelector(".itemPrice");
   const icons = item.querySelector(".icons");
   const checkIcon = icons.querySelector(".checkIcon");
+
+  const itemName = currentShopName.innerHTML.slice(
+    3,
+    currentShopName.innerHTML.length
+  );
+  const firstPrice = currentPrice.innerHTML.slice(
+    1,
+    currentPrice.innerHTML.length
+  );
   if (
     currentShopName.parentNode.innerHTML !==
     `<input class="newShopInput" placeholder="Enter new shop name">`
   ) {
+    editShopName.value = itemName;
     currentShopName.innerHTML = ``;
 
     editShopName.classList = "newShopInput";
     editShopName.placeholder = "Enter new shop name";
     currentShopName.append(editShopName);
 
+    editPrice.value = firstPrice;
     currentPrice.innerHTML = ``;
     editPrice.classList = "newShopInput";
     editPrice.placeholder = "Enter new price";
@@ -65,6 +76,7 @@ const editShopList = (item) => {
     currentPrice.append(editPrice);
 
     checkIcon.addEventListener("click", async () => {
+      const updateExpense = {};
       if (editShopName.value == "" && editPrice.value == "") {
         getShopNames();
       } else {
@@ -72,10 +84,11 @@ const editShopList = (item) => {
           (editShopName.value == "" || Boolean(editShopName.value.trim())) &&
           !Number.isNaN(Number(editPrice.value))
         ) {
-          const updateExpense = {
-            shop: editShopName.value,
-            price: Number(editPrice.value),
-          };
+          if (itemName !== editShopName.value)
+            updateExpense.shop = editShopName.value;
+          if (firstPrice !== editShopName.value)
+            updateExpense.price = Number(editPrice.value);
+
           const getApi = await withBody("PATCH", updateExpense, item.title);
           const shop = await getApi.json();
           render(shop);
