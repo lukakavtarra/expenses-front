@@ -1,6 +1,7 @@
 const createButton = document.createElement("button");
 
 const expensesInputDiv = document.getElementById("expensesInput");
+let existingList;
 
 const link = "http://localhost:3300/api/expenses/";
 const headers = {
@@ -77,12 +78,17 @@ const editShopList = (item) => {
 
     checkIcon.addEventListener("click", async () => {
       const updateExpense = {};
-      if (editShopName.value == "" && editPrice.value == "") {
-        getShopNames();
+      if (
+        itemName == editShopName.value &&
+        Number(firstPrice) == Number(editPrice.value)
+      ) {
+        render(existingList);
       } else {
         if (
-          (editShopName.value == "" || Boolean(editShopName.value.trim())) &&
-          !Number.isNaN(Number(editPrice.value))
+          editShopName.value !== "" &&
+          Boolean(editShopName.value.trim()) &&
+          !Number.isNaN(Number(editPrice.value)) &&
+          editPrice.value !== ""
         ) {
           if (itemName !== editShopName.value)
             updateExpense.shop = editShopName.value;
@@ -93,7 +99,7 @@ const editShopList = (item) => {
           const shop = await getApi.json();
           render(shop);
         } else {
-          getErrorMessage();
+          getErrorMessage(editShopName.value == "", editPrice.value !== "");
         }
       }
     });
@@ -125,6 +131,8 @@ const addExpense = async () => {
 };
 
 const render = async (shoppingLists) => {
+  existingList = shoppingLists;
+
   const getShopListDiv = document.getElementById("expanses-list");
   const createTotal = document.createElement("div");
 
@@ -183,8 +191,10 @@ window.onload = () => {
 };
 
 //get error message
-const getErrorMessage = () => {
+const getErrorMessage = (nameError, priceError) => {
   //error messages
+  console.log(`name error ${nameError}`);
+  console.log(`price error ${priceError}`);
   const getMain = document.querySelector("main");
   const wrongValidity = document.createElement("div");
   const errorAlert = document.createElement("p");
