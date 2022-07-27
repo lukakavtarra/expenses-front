@@ -1,8 +1,7 @@
-@keyframes errorShow { 
+@keyframes errorShow {
   0% {
     opacity: 0;
     top: -10%;
-
   }
 
   100% {
@@ -67,7 +66,6 @@ i.fa-solid {
   width: 542px !important;
 }
 
-
 /* styling error popup */
 .error-box {
   font-size: 16px;
@@ -87,8 +85,8 @@ i.fa-solid {
 }
 
 .error-box .error-alert {
-  border-bottom:0.1px solid #80808042;
-  color: #DC3545;
+  border-bottom: 0.1px solid #80808042;
+  color: #dc3545;
   display: flex;
   align-items: center;
   padding: 9.5px 12px;
@@ -97,11 +95,16 @@ i.fa-solid {
   border: solid;
   padding: 3px 13px;
   border-radius: 50%;
-  background-color: #DC3545;
+  background-color: #dc3545;
   color: white;
   margin-right: 8px;
 }
-.error-box .error-message{
+.error-box .error-message {
   padding: 12px;
   color: #212529;
+}
+/* new shop input styling */
+input.newShopInput,
+input.newPrice {
+  width: 180px;
 }
