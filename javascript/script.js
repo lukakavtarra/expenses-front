@@ -86,7 +86,7 @@ const editShopList = (item) => {
         ) {
           if (itemName !== editShopName.value)
             updateExpense.shop = editShopName.value;
-          if (firstPrice !== editShopName.value)
+          if (Number(firstPrice) !== Number(editPrice.value))
             updateExpense.price = Number(editPrice.value);
 
           const getApi = await withBody("PATCH", updateExpense, item.title);
